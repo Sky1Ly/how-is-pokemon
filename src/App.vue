@@ -1,5 +1,34 @@
-<script setup>
-import HelloWorld from './components/HelloWorld.vue'
+<script>
+import axios from "axios";
+
+export default {
+  data() {
+    return {
+      getDataApi: [],
+    }
+  },
+
+  methods: {
+    async consultaApiRandom() {
+      try {
+        const datoBusqueda = Math.floor(Math.random() * 1000)
+        const url = `https://pokeapi.co/api/v2/pokemon?offset=${datoBusqueda}&limit=20`
+
+        const { data } = await axios.get(url)
+        this.getDataApi = data
+
+      } catch (error) {
+        console.error(`Ha ocurrido un error: ${error}`);
+      }
+    }
+  },
+
+  mounted() {
+    this.consultaApiRandom()
+  },
+}
+
+//API para obtener Pokemons randoms: https://pokeapi.co/api/v2/pokemon?offset=980&limit=20
 </script>
 
 <template>
@@ -11,7 +40,6 @@ import HelloWorld from './components/HelloWorld.vue'
       <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
     </a>
   </div>
-  <HelloWorld msg="Vite + Vue" />
 </template>
 
 <style scoped>
@@ -21,9 +49,11 @@ import HelloWorld from './components/HelloWorld.vue'
   will-change: filter;
   transition: filter 300ms;
 }
+
 .logo:hover {
   filter: drop-shadow(0 0 2em #646cffaa);
 }
+
 .logo.vue:hover {
   filter: drop-shadow(0 0 2em #42b883aa);
 }
