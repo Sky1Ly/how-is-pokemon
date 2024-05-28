@@ -5,7 +5,8 @@ export default {
   data() {
     return {
       getDataApi: [],
-      dataPokemon: {}
+      dataPokemon: {},
+      nombrePokemon: {}
     }
   },
 
@@ -47,8 +48,22 @@ export default {
 </script>
 
 <template>
-  <div>
-    <h1>How is Pokemon?</h1>
+  <div class="container">
+    <div class="text-center mt-5 mb-5">
+      <img src="./assets/pokemon-logo.png" alt="Pokemon logo" style="max-width: 350px;" />
+      <h1>How is Pokemon?</h1>
+    </div>
+
+    <div class="row">
+      <div v-for="(data, i) in dataPokemon" :key="i" class="col-sm-3 mx-auto mb-5">
+        <img :src="data.image" style="filter: blur(2px) grayscale(100%);" />
+        <br/>
+        <input type="text" name="inputNombre" v-model="nombrePokemon">
+        <p>{{ data.name }}</p>
+        <button type="button" class="btn btn-outline-success">Descubrir</button>        
+        <p>{{ nombrePokemon }}</p>
+      </div>
+    </div>
   </div>
 </template>
 
