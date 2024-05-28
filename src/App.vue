@@ -5,6 +5,7 @@ export default {
   data() {
     return {
       getDataApi: [],
+      dataPokemon: {}
     }
   },
 
@@ -14,8 +15,22 @@ export default {
         const datoBusqueda = Math.floor(Math.random() * 1000)
         const url = `https://pokeapi.co/api/v2/pokemon?offset=${datoBusqueda}&limit=20`
 
-        const { data } = await axios.get(url)
-        this.getDataApi = data
+        const response = await axios.get(url)
+        this.getDataApi = response.data
+
+        const promesa = this.getDataApi.results.map(async (pokemon) => {
+          const { data } = await axios.get(pokemon.url)
+
+          return {
+            name: pokemon.name,
+            image: data.sprites?.front_default,
+            gif: data.sprites?.other?.showdown?.front_default
+          }
+        })
+
+        this.dataPokemon = await Promise.all(promesa)
+
+        console.log(this.dataPokemon);
 
       } catch (error) {
         console.error(`Ha ocurrido un error: ${error}`);
@@ -33,28 +48,14 @@ export default {
 
 <template>
   <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
+    <h1>How is Pokemon?</h1>
   </div>
 </template>
 
 <style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
+h1 {
+  font-family: "Press Start 2P", system-ui;
+  font-weight: 400;
+  font-style: normal;
 }
 </style>
