@@ -1,5 +1,6 @@
 <script>
 import axios from "axios";
+import WhatIsPokemon from "./components/WhatIsPokemon.vue";
 
 export default {
   data() {
@@ -9,6 +10,10 @@ export default {
       nombrePokemon: [],
       count: 0
     }
+  },
+
+  components: {
+    WhatIsPokemon
   },
 
   methods: {
